@@ -1,8 +1,8 @@
-# Brain — LLM-Maintained Second Brain
+# Brain Template — LLM-Maintained Second Brain
 
-A personal knowledge base where Claude Code writes and maintains everything. You curate sources and ask questions; the LLM does all the bookkeeping.
+A template for a personal knowledge base where an LLM (Claude, Gemini, etc.) writes and maintains everything. You curate sources and ask questions; the LLM does the bookkeeping.
 
-**The core idea:** instead of re-deriving knowledge from raw documents on every query (RAG), the LLM incrementally builds a persistent wiki. Each time you add a source, it reads it, extracts key information, and integrates it into the existing wiki — updating entity pages, flagging contradictions, maintaining cross-references. The wiki compounds over time.
+**The core idea:** instead of re-deriving knowledge from raw documents on every query (RAG), the LLM incrementally builds a persistent wiki. Each time you add a source, it reads it, extracts key information, and integrates it into the existing wiki — updating entity pages, flagging contradictions, and maintaining cross-references. The wiki compounds over time.
 
 Read [`llm-wiki.md`](./llm-wiki.md) for the full conceptual background.
 
@@ -13,8 +13,8 @@ Read [`llm-wiki.md`](./llm-wiki.md) for the full conceptual background.
 - [Obsidian](https://obsidian.md) — your wiki viewer/browser (free)
 - One or more LLM agents — the wiki works with any agent that reads a convention file:
   - [Claude Code](https://claude.ai/code) → reads `CLAUDE.md`
-  - [OpenAI Codex](https://platform.openai.com/docs/codex) → reads `AGENTS.md`
   - [Gemini CLI](https://github.com/google-gemini/gemini-cli) → reads `GEMINI.md`
+  - [OpenAI Codex/Others](https://platform.openai.com/docs/codex) → reads `AGENTS.md`
 
 All agents operate on the same `wiki/` directory. Each reads its own schema file; the wiki stays consistent across agents.
 
@@ -22,20 +22,19 @@ All agents operate on the same `wiki/` directory. Each reads its own schema file
 
 ## Setup
 
-```bash
-git clone <this-repo> brain
-cd brain
-```
+1. **Create your repo:** Click **"Use this template"** on GitHub to create your own private or public knowledge base.
+2. **Clone and enter:**
+   ```bash
+   git clone <your-new-repo-url> brain
+   cd brain
+   ```
+3. **Open in Obsidian:** Open Obsidian → **Open folder as vault** → select the `brain/` directory.
+4. **Start your agent:** Open your preferred agent in the root directory. For Gemini CLI:
+   ```bash
+   gemini
+   ```
 
-Open Obsidian → **Open folder as vault** → select the `brain/` directory.
-
-Open your agent in the same directory. For Claude Code:
-
-```bash
-claude
-```
-
-The schema files (`CLAUDE.md`, `AGENTS.md`, `GEMINI.md`) are already there — each agent reads its own automatically. The wiki scaffold (`wiki/index.md`, `wiki/log.md`, subdirectory structure) is already initialized.
+The schema files (`CLAUDE.md`, `GEMINI.md`, `AGENTS.md`) are pre-configured. The wiki scaffold (`wiki/index.md`, `wiki/log.md`, etc.) is initialized and ready for your first source.
 
 ---
 
@@ -68,13 +67,13 @@ Raw source documents live wherever you want — drop them in a `raw/` folder or 
 
 ### Ingest a source
 
-Drop a source file (markdown, PDF, text) into `raw/`, then tell Claude:
+Drop a source file (markdown, PDF, text) into `raw/`, then tell the agent:
 
 ```
 ingest raw/my-article.md
 ```
 
-Claude will:
+The agent will:
 1. Read the source and share 2–4 key takeaways with you
 2. Ask if you want to redirect emphasis before writing anything
 3. Write a summary page in `wiki/sources/`
@@ -94,7 +93,7 @@ Compare the approaches taken by source A vs source B.
 What are the open questions around topic X?
 ```
 
-Claude reads the index, drills into relevant pages, and synthesizes an answer with `[[wikilink]]` citations. Non-trivial answers (comparisons, analyses, discoveries) can be filed back into `wiki/outputs/` so they compound into the knowledge base.
+The agent reads the index, drills into relevant pages, and synthesizes an answer with `[[wikilink]]` citations. Non-trivial answers (comparisons, analyses, discoveries) can be filed back into `wiki/outputs/` so they compound into the knowledge base.
 
 ### Lint the wiki
 
@@ -104,20 +103,20 @@ Periodically health-check:
 lint the wiki
 ```
 
-Claude will scan for: contradictions between pages, orphan pages, concepts mentioned but lacking their own page, missing cross-references, and data gaps. It will also suggest new questions to investigate and new sources to look for.
+The agent will scan for: contradictions between pages, orphan pages, concepts mentioned but lacking their own page, missing cross-references, and data gaps. It will also suggest new questions to investigate and new sources to look for.
 
 ---
 
 ## The Workflow
 
-The setup that works best: **Obsidian open on one side, Claude Code open on the other.**
+The setup that works best: **Obsidian open on one side, your agent open on the other.**
 
 - Obsidian's graph view shows the shape of your wiki — what's connected, what's a hub, what's orphaned
-- Claude Code edits files; Obsidian renders them in real time
+- The agent edits files; Obsidian renders them in real time
 - Follow `[[wikilinks]]` in Obsidian to browse the wiki as it grows
 - Use backlinks panel to see what connects to any given page
 
-Claude Code is the programmer. The wiki is the codebase. Obsidian is the IDE.
+The agent is the programmer. The wiki is the codebase. Obsidian is the IDE.
 
 ---
 
@@ -139,10 +138,10 @@ To download images from clipped articles locally: Obsidian Settings → Files an
 
 - **Add `raw/` to `.gitignore`** if your sources are private or large. The wiki itself is the valuable artifact — it can be rebuilt.
 - **One source at a time.** Batch ingestion works but you lose the chance to redirect emphasis. Staying involved produces a better wiki.
-- **File good answers back.** When Claude gives you a useful analysis, say "file this as an output." Good answers that disappear into chat history are wasted synthesis.
+- **File good answers back.** When the agent gives you a useful analysis, say "file this as an output." Good answers that disappear into chat history are wasted synthesis.
 - **The log is searchable.** Each entry follows `## [YYYY-MM-DD] operation | title` — `grep "^## \[" wiki/log.md` gives you the full timeline.
 - **The wiki is a git repo.** You get version history for free. The diff of a single ingest shows exactly what the LLM touched.
-- At scale (~100+ sources), consider [qmd](https://github.com/tobi/qmd) — a local BM25/vector search engine for markdown with an MCP server Claude Code can use natively.
+- At scale (~100+ sources), consider [qmd](https://github.com/tobi/qmd) — a local BM25/vector search engine for markdown with an MCP server many agents can use natively.
 
 ---
 
