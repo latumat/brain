@@ -199,8 +199,9 @@
       "bases:Create new base": false
     }
   },
-  "active": "54c634115b1a10b9",
+  "active": "4b8f3d1c5deca648",
   "lastOpenFiles": [
+    "Welcome.md",
     "wiki/outputs",
     "wiki/topics",
     "wiki/concepts",
@@ -211,7 +212,6 @@
     "wiki/log.md",
     "wiki/index.md",
     "wiki",
-    "CLAUDE.md",
-    "Welcome.md"
+    "CLAUDE.md"
   ]
 }
