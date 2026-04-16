@@ -11,7 +11,12 @@ Read [`llm-wiki.md`](./llm-wiki.md) for the full conceptual background.
 ## Prerequisites
 
 - [Obsidian](https://obsidian.md) — your wiki viewer/browser (free)
-- [Claude Code](https://claude.ai/code) — the LLM that writes and maintains the wiki
+- One or more LLM agents — the wiki works with any agent that reads a convention file:
+  - [Claude Code](https://claude.ai/code) → reads `CLAUDE.md`
+  - [OpenAI Codex](https://platform.openai.com/docs/codex) → reads `AGENTS.md`
+  - [Gemini CLI](https://github.com/google-gemini/gemini-cli) → reads `GEMINI.md`
+
+All agents operate on the same `wiki/` directory. Each reads its own schema file; the wiki stays consistent across agents.
 
 ---
 
@@ -24,13 +29,13 @@ cd brain
 
 Open Obsidian → **Open folder as vault** → select the `brain/` directory.
 
-Open Claude Code in the same directory:
+Open your agent in the same directory. For Claude Code:
 
 ```bash
 claude
 ```
 
-The `CLAUDE.md` file is already there — Claude Code reads it automatically as its operating instructions. The wiki scaffold (`wiki/index.md`, `wiki/log.md`, subdirectory structure) is already initialized.
+The schema files (`CLAUDE.md`, `AGENTS.md`, `GEMINI.md`) are already there — each agent reads its own automatically. The wiki scaffold (`wiki/index.md`, `wiki/log.md`, subdirectory structure) is already initialized.
 
 ---
 
@@ -38,7 +43,9 @@ The `CLAUDE.md` file is already there — Claude Code reads it automatically as 
 
 ```
 /
-├── CLAUDE.md           ← LLM operating instructions (the schema)
+├── CLAUDE.md           ← schema for Claude Code
+├── AGENTS.md           ← schema for OpenAI Codex
+├── GEMINI.md           ← schema for Gemini CLI
 ├── llm-wiki.md         ← conceptual overview of the pattern
 ├── README.md           ← this file
 ├── assets/             ← locally downloaded images (optional)
@@ -141,14 +148,14 @@ To download images from clipped articles locally: Obsidian Settings → Files an
 
 ## Adapting the Schema
 
-`CLAUDE.md` is your configuration file. Edit it to match your domain:
+`CLAUDE.md` (and its siblings `AGENTS.md`, `GEMINI.md`) is your configuration file. Edit it to match your domain — keep all three in sync so agents behave consistently:
 
 - Add new page types (e.g. `experiments/`, `decisions/`)
 - Change the source summary structure for your content type
 - Adjust the ingest workflow (e.g. skip entity pages for text-only domains)
 - Add output format conventions (tables, Marp slides, matplotlib charts)
 
-Tell Claude what you changed and why — it will follow the updated schema from that point forward.
+Tell your agent what you changed and why — it will follow the updated schema from that point forward. If you change the schema in one file, update the others to match.
 
 ---
 
